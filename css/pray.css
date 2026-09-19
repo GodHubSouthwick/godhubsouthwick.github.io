@@ -1,0 +1,12 @@
+.prayer-horizontal {
+    display: flex;
+    align-items: start;
+    justify-content: space-around;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.player-number {
+    font-weight: bolder;
+    font-size: 20px;
+}

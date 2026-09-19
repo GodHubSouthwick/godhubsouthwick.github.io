@@ -1,0 +1,34 @@
+<!-- LAPTOP VIEW ICONS -->
+<div id="navA" class="laptop-only-nav">
+    <a href="{{ url_for('index') }}" class="nav-img" style="border-radius: 50%; background-color: var(--accent)">
+        <img style="mix-blend-mode: screen" class="nav-img" src="images/White on Black Logo.png" />
+    </a>
+    <img class="nav-img" src="images/love1-bg.png" />
+    <img class="nav-img" src="images/love2-bg.png" />
+    <img class="nav-img" src="images/love3-bg.png" />
+    <div style="width: 0"></div>
+</div>
+
+
+
+<!-- MOBILE VIEW LOGO -->
+<a href="{{ url_for('index') }}" style="height: 15vh" class="mobile-only-nav" >
+    <img style="height: 15vh; mix-blend-mode: screen" src="images/White on Black Logo.png" />
+</a>
+
+
+<!-- BURGER BAR -->
+<input id="toggle" hidden type="checkbox" />
+<label for="toggle" class="hamburger mobile-only-nav" style="margin: 20px" >
+    <div class="top-bun"></div>
+    <div class="meat"></div>
+    <div class="bottom-bun"></div>
+</label>
+
+
+<!-- THIS IS WHERE ITS AT -->
+<div id="navB" class="nav-links">
+    {% for item in site.data.navigation %}
+        <a class="hover-underline" {% if item.onclick %} onclick="{{ item.onclick }}" {% endif %} {% if item.link %} href="{{ item.link }}" {% endif %} >{{ item.name | capitalize }}</a>
+    {% endfor %}
+</div>

@@ -1,0 +1,125 @@
+/* ------------------------------------------------ */
+/* ------------------ Navigation ------------------ */
+/* ------------------------------------------------ */
+
+nav {
+    position: sticky;
+    top: calc(-15vh - 25px);
+    left: 0;
+    right: 0;
+    margin-top: 0;
+    background-color: var(--background);
+    z-index: 1001;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+
+    box-shadow: 0 0 5px var(--text);
+
+    & div {
+        width: 100vw;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        overflow: hidden;
+    }
+
+    & #navA {
+        height: 15vh;
+        margin-top: 25px;
+    }
+
+    & .nav-links {
+        height: 10vh;
+
+        & a {
+            color: var(--text);
+            text-decoration: none;
+            font-size: min(max(12px, 2vh), 23px);
+            font-weight: bold;
+            margin: 10px;
+            cursor: pointer;
+            transition: background-color 0.15s;
+        }
+    }
+
+    & .nav-img {
+        height: 100%;
+    }
+}
+
+
+/* ------------------ Responsive ------------------ */
+
+@media (min-width: 778px) {
+    .mobile-only-nav {
+        display: none !important;
+    }
+}
+
+@media (max-width: 777px) {
+    nav {
+        top: 0;
+        background-color: var(--accent);
+
+        & .laptop-only-nav {
+            display: none !important;
+        }
+
+        & .nav-links {
+            height: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: start;
+            width: 100%;
+            overflow: scroll;
+            transition: height 0.3s;
+
+            & a {
+                color: var(--background);
+                font-size: 32px;
+            }
+        }
+
+        /* ---------------- Burger ---------------- */
+
+        & .hamburger {
+            & div {
+                position: relative;
+                width: 3em;
+                height: 7px;
+                margin-top: 8px;
+                border-radius: 3px;
+                background-color: var(--background);
+                transition: all 0.3s ease-in-out;
+            }
+        }
+    }
+
+    /* ---------------- Burger State ---------------- */
+
+    #toggle:checked + .hamburger {
+        & .top-bun {
+            transform: rotate(-45deg);
+            margin-top: 25px;
+        }
+
+        & .bottom-bun {
+            opacity: 0;
+            transform: rotate(45deg);
+        }
+
+        & .meat {
+            transform: rotate(45deg);
+            margin-top: -7px;
+        }
+
+        & + #navB {
+            height: 85vh !important;
+        }
+    }
+}

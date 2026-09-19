@@ -1,0 +1,150 @@
+
+
+/* ------------------------------------------------ */
+/* -------------------- Footer -------------------- */
+/* ------------------------------------------------ */
+
+footer {
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #d3d3d32e;
+}
+
+footer div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px;
+    text-align: center;
+    margin-top: 10px;
+    justify-content: start;
+}
+
+@media (min-width: 1180px) {
+    footer {
+        display: grid;
+        grid-template-columns: repeat(5, 20vw);
+        align-items: start;
+    }
+}
+
+@media (min-width: 501px) and (max-width: 1179px) {
+    footer {
+        flex-direction: row;
+        align-items: start;
+        flex-wrap: wrap;
+        justify-content: space-around;
+    }
+}
+@media (min-width: 562px) and (max-width: 1179px) {
+    .horizontal-mid-width {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        gap: 5vw;
+
+        & a {
+            max-width: 15vw;
+
+            & img {
+                max-width: 100%;
+            }
+        }
+    }
+    .middle-width-dissapear {
+        display: none;
+    }
+
+}
+
+.footer-link {
+    color: var(--text);
+    margin-top: 17px;
+}
+.footer-link img {
+    max-height: 50px;
+    max-width: 150px;
+}
+
+/* ------------------------------------------------ */
+/* ---------------------- Map --------------------- */
+/* ------------------------------------------------ */
+
+#map {
+    height: 180px;
+    width: 250px;
+    z-index: 99;
+}
+
+#findus {
+    scroll-margin-top: 15vh;
+}
+
+/* ------------------------------------------------ */
+/* -------------------- Socials ------------------- */
+/* ------------------------------------------------ */
+
+.fa {
+    margin: 17px;
+    padding: 10px;
+    font-size: 40px !important;
+    width: 40px;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 50%;
+    color: white;
+}
+
+.fa:hover {
+    opacity: 0.7;
+}
+.fa-facebook {
+    background-color: #3b5998;
+}
+
+.fa-whatsapp {
+    background-color: #25d366;
+}
+
+.fa-instagram {
+    background: #d6249f;
+    background: radial-gradient(
+        circle at 30% 107%,
+        #fdf497 0%,
+        #fdf497 5%,
+        #fd5949 45%,
+        #d6249f 60%,
+        #285aeb 90%
+    );
+}
+
+/* ------------------------------------------------ */
+/* -------------------- Contact ------------------- */
+/* ------------------------------------------------ */
+
+.mid-width-reshuffle {
+    display: none;
+
+}
+
+@media (min-width: 820px) and (max-width: 1030px) {
+    .mid-width-reshuffle {
+        display: flex;
+    }
+
+    /* ------------------------------------------------ */
+    /* ------------------ Quick Links ----------------- */
+    /* ------------------------------------------------ */
+
+    .anti-mid-width-reshuffle {
+        display: none;
+    }
+}
+
+/* ------------------------------------------------ */
+/* ------------------- Partners ------------------- */
+/* ------------------------------------------------ */
+

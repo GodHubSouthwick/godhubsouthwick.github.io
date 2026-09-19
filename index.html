@@ -1,0 +1,65 @@
+---
+layout: base
+title: God Hub Southwick
+---
+<link rel="stylesheet" href="css/index.css" /> 
+
+<!--https://fastly.picsum.photos/id/167/1000/300.jpg?hmac=MJreUYGdyS5C63HSVhnCG0p9roW1r0DQEs66NPjfB1c
+<img
+    class="hero-img laptop-only"
+    style="filter: brightness(0.7);"
+    src="https://fastly.picsum.photos/id/167/1000/300.jpg?hmac=MJreUYGdyS5C63HSVhnCG0p9roW1r0DQEs66NPjfB1c"
+/>
+<img
+    class="hero-img mobile-only"
+    src="images/home-cropped.png"
+/>-->
+
+<div id="heroText" class="laptop-only">SUNDAY SERVICES<br/> COMING SOON</div>
+
+
+
+<section id="events">
+    <svg viewBox="0 0 200 200" style="width: 0; height: 0">
+        <defs>
+            <clipPath id="blob1" clipPathUnits="objectBoundingBox">
+                <path transform="scale(0.005)" d="M 26.25 11.0171 C 49.35 3.6724 75.6 7.3447 103.95 2.4482 C 133.35 -1.2241 162.75 4.8965 182.7 12.2412 C 210 27 190.05 69 194.25 101 C 199.5 137 199.5 184 179.55 189.7386 C 153.3 195.8592 129.15 190.9627 103.95 194.6351 C 75.6 198.3074 49.35 192.1868 28.35 187.2904 C -6.3 181.1698 5.25 153.015 8.4 100.3778 C 9.45 58.7578 -6.3 19.5859 26.25 11.0171 Z"/>
+            </clipPath>
+            <clipPath id="blob2" clipPathUnits="objectBoundingBox">
+                <path transform="scale(0.005)" d="M 7.2 7.2 C 11 -1 74.4 6 102 2.4 C 136.8 0 187 1 194.4 10.8 C 201 22 192 69.6 196.8 99.6 C 200.4 134.4 194.4 168 188.4 189.6 C 186 205 126 194 99 197 C 64.8 198 13 202 10.8 187.2 C 4.8 156 9.6 126 4.8 97.2 C 1.2 64.8 2 19 7.2 7.2 Z"/>
+            </clipPath>
+        </defs>
+    </svg>
+    <div class="event-container" style="clip-path: url(#blob1)">
+        <div class="title">
+            <div>Sunday Services</div>
+            <div>Coming Soon</div>
+            <!--<div>Starting</div>
+            <div>4th October 2026!</div>-->
+        </div>
+        <div class="content">
+            {% for item in site.data.services %}
+            {% capture number %}{{ forloop.length }}{% endcapture %}
+                <p><span>{{ forloop.index}}.</span> {{ item.name }}</p>
+                <p>{{ item.day }}</p>
+                <p>{{ item.time }}</p>
+            {% endfor %}
+        </div>
+    </div>
+    
+    <div class="event-container" style="clip-path: url(#blob2)">
+        <div class="title">
+            <div>Hopes and dreams</div>
+            <!--<div>Coming</div>
+            <div>2026-2027</div>-->
+        </div>
+        <div class="content">
+            {% for item in site.data.events %}
+            {% capture number %}{{ forloop.length }}{% endcapture %}
+                    <p><span>{{ forloop.index}}.</span> {{ item.line1 }} {{item.line2}}</p>
+                    <div></div>
+                    <div></div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
