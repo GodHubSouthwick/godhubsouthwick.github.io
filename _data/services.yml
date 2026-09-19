@@ -1,0 +1,9 @@
+- name: 3pm Service
+  time: 3-4pm
+
+- name: Family Service
+  time: 5-6pm
+
+#- name: Midweek Prayer + Song
+#  day: Wednesday
+#  time: 12 noon

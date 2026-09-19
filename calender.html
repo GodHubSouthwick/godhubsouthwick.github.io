@@ -1,0 +1,312 @@
+---
+layout: base
+title: God Hub Southwick
+---
+<link
+    rel="stylesheet"
+    href="css/calender.css"
+/>
+
+<section class="events-section" aria-labelledby="events-heading">
+  <h2 id="events-heading">What's On</h2>
+  <p class="subtitle">Our upcoming events and services</p>
+
+  <div class="view-toggle" role="tablist" aria-label="Calendar view">
+    <button type="button" data-view="grid" role="tab" aria-selected="false">Month</button>
+    <button type="button" class="active" data-view="list" role="tab" aria-selected="true">List</button>
+  </div>
+
+  <div class="cal-header" id="calHeader">
+    <button type="button" class="cal-nav-btn" id="prevMonth" aria-label="Previous month">&lsaquo;</button>
+    <span class="month-label" id="monthLabel"></span>
+    <button type="button" class="cal-nav-btn" id="nextMonth" aria-label="Next month">&rsaquo;</button>
+  </div>
+
+  <div class="legend" id="legend"></div>
+
+  <div id="calRoot">
+    <div class="loading">Loading events…</div>
+  </div>
+
+</section>
+
+<script>
+(function () {
+  // ---------------------------------------------------------------
+  // CONFIG
+  // Point this at your real API. Handle pagination if results > per_page.
+  // ---------------------------------------------------------------
+  const API_URL = "https://godhub.churchsuite.com/-/calendar/7f7404d8-4c06-4605-8d2c-10e1c30f340a/json";
+  
+  const el = {
+    calRoot: document.getElementById('calRoot'),
+    monthLabel: document.getElementById('monthLabel'),
+    legend: document.getElementById('legend'),
+    prevBtn: document.getElementById('prevMonth'),
+    nextBtn: document.getElementById('nextMonth'),
+    toggleBtns: document.querySelectorAll('.view-toggle button'),
+  };
+
+  let allEvents = [];
+  let categories = {};
+  let currentDate = new Date();
+  let selectedDay = null;
+  let currentView = 'list';
+  const activeCategories = new Set();
+
+  // ---------------------------------------------------------------
+  // FETCH (with pagination walk)
+  // ---------------------------------------------------------------
+  async function fetchAllEvents() {
+
+    let page = 1;
+    let events = [];
+    let cats = [];
+
+    while (page) {
+      const res = await fetch(`${API_URL}?page=${page}`);
+      if (!res.ok) throw new Error(`API returned ${res.status}`);
+      const data = await res.json();
+      events = events.concat(data.events || []);
+      if (page === 1) cats = data.categories || [];
+      page = data.pagination && data.pagination.next_page;
+    }
+    return { events, categories: cats };
+  }
+
+  function init() {
+    fetchAllEvents()
+      .then(({ events, categories: cats }) => {
+        allEvents = events;
+        categories = {};
+        cats.forEach(c => { categories[c.id] = c; });
+        renderLegend();
+        render();
+      })
+      .catch(err => {
+        el.calRoot.innerHTML = `<div class="error-state">Couldn't load events right now. (${err.message})</div>`;
+      });
+
+    el.prevBtn.addEventListener('click', () => { changeMonth(-1); });
+    el.nextBtn.addEventListener('click', () => { changeMonth(1); });
+    el.toggleBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        el.toggleBtns.forEach(b => { b.classList.remove('active'); b.setAttribute('aria-selected', 'false'); });
+        btn.classList.add('active');
+        btn.setAttribute('aria-selected', 'true');
+        currentView = btn.dataset.view;
+        selectedDay = null;
+        render();
+      });
+    });
+  }
+
+  function changeMonth(delta) {
+    currentDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + delta, 1);
+    selectedDay = null;
+    render();
+  }
+
+  function eventsByDateKey() {
+    const map = {};
+    getFilteredEvents().forEach(ev => {
+      const d = new Date(ev.starts_at);
+      const key = `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
+      (map[key] = map[key] || []).push(ev);
+    });
+    return map;
+  }
+
+  function render() {
+    const monthFmt = currentDate.toLocaleDateString('en-GB', { month: 'long', year: 'numeric' });
+    el.monthLabel.textContent = monthFmt;
+    document.getElementById('calHeader').style.display = (currentView === 'grid') ? 'flex' : 'none';
+
+    if (currentView === 'grid') {
+      renderGrid();
+    } else {
+      renderFullList();
+    }
+  }
+
+  function renderGrid() {
+    const year = currentDate.getFullYear();
+    const month = currentDate.getMonth();
+    const firstDay = new Date(year, month, 1);
+    const startOffset = (firstDay.getDay() + 6) % 7; // Monday-first
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const byDate = eventsByDateKey();
+    const today = new Date();
+
+    let html = `<div class="cal-grid">`;
+    ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].forEach(d => {
+      html += `<div class="cal-weekday">${d}</div>`;
+    });
+
+    for (let i = 0; i < startOffset; i++) {
+      html += `<div class="cal-day empty" aria-hidden="true"></div>`;
+    }
+
+    for (let day = 1; day <= daysInMonth; day++) {
+      const key = `${year}-${month}-${day}`;
+      const dayEvents = byDate[key] || [];
+      const isToday = today.getFullYear() === year && today.getMonth() === month && today.getDate() === day;
+      const isSelected = selectedDay === day;
+      const maxLabels = 3;
+      const sortedDayEvents = dayEvents.slice().sort((a, b) => new Date(a.starts_at) - new Date(b.starts_at));
+      const labels = sortedDayEvents.slice(0, maxLabels).map(ev => {
+        const cat = categories[ev.category_id];
+        const color = cat ? cat.color + '85' : 'var(--light-grey)';
+        return `<div class="cal-event-label" style="background:${color}">${escapeHTML(ev.name)}</div>`;
+      }).join('');
+      const more = dayEvents.length > maxLabels
+        ? `<div class="cal-day-more">+${dayEvents.length - maxLabels} more</div>`
+        : '';
+
+      html += `
+        <button type="button" class="cal-day${isToday ? ' today' : ''}${isSelected ? ' selected' : ''}"
+          data-day="${day}" aria-label="${day} ${dayEvents.length ? `- ${dayEvents.length} event(s)` : ''}">
+          <div class="cal-day-num">${day}</div>
+          <div class="cal-day-events">${labels}</div>
+          ${more}
+        </button>`;
+    }
+
+    html += `</div>`;
+
+    // day detail panel beneath grid
+    html += `<div class="events-list" id="dayDetail"></div>`;
+
+    el.calRoot.innerHTML = html;
+
+    el.calRoot.querySelectorAll('.cal-day[data-day]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const day = parseInt(btn.dataset.day, 10);
+        selectedDay = (selectedDay === day) ? null : day;
+        renderGrid();
+      });
+    });
+
+    if (selectedDay) {
+      const key = `${year}-${month}-${selectedDay}`;
+      renderDayDetail(byDate[key] || [], selectedDay);
+    }
+  }
+
+  function renderDayDetail(events, day) {
+    const detail = document.getElementById('dayDetail');
+    if (!detail) return;
+    const dateLabel = new Date(currentDate.getFullYear(), currentDate.getMonth(), day)
+      .toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long' });
+
+    if (!events.length) {
+      detail.innerHTML = `<div class="events-list-heading">${dateLabel}</div><div class="empty-state">No events on this day.</div>`;
+      return;
+    }
+
+    detail.innerHTML = `<div class="events-list-heading">${dateLabel}</div>` +
+      events.sort((a,b) => new Date(a.starts_at) - new Date(b.starts_at))
+        .map(eventCardHTML).join('');
+  }
+
+  function renderFullList() {
+    const upcoming = getFilteredEvents()
+      .filter(ev => new Date(ev.starts_at) >= startOfToday())
+      .sort((a, b) => new Date(a.starts_at) - new Date(b.starts_at));
+
+    if (!upcoming.length) {
+      el.calRoot.innerHTML = `<div class="empty-state">No upcoming events${activeCategories.size ? ' in the selected categories' : ''}.</div>`;
+      return;
+    }
+
+    // group by day
+    const groups = [];
+    let lastKey = null;
+    upcoming.forEach(ev => {
+      const d = new Date(ev.starts_at);
+      const key = d.toDateString();
+      if (key !== lastKey) {
+        groups.push({ label: d.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long' }), events: [] });
+        lastKey = key;
+      }
+      groups[groups.length - 1].events.push(ev);
+    });
+
+    el.calRoot.innerHTML = groups.map(g => `
+      <div class="events-list">
+        <div class="events-list-heading">${g.label}</div>
+        <div class="events-list-grid">
+          ${g.events.map(eventCardHTML).join('')}
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function eventCardHTML(ev) {
+    const cat = categories[ev.category_id];
+    const time = new Date(ev.starts_at).toLocaleTimeString('en-GB', { hour: 'numeric', minute: '2-digit' });
+    const largeImg = ev.image && (ev.image.large || ev.image.medium);
+    const imgBlock = largeImg
+      ? `<div class="event-card-img-wrap"><img src="${largeImg}" alt="" loading="lazy"></div>`
+      : `<div class="event-card-img-wrap no-image" aria-hidden="true"></div>`;
+    const catPill = cat
+      ? `<span class="cat-pill"><span class="cal-dot" style="background:${cat.color}"></span>${cat.name}</span>`
+      : '';
+    const location = ev.location && ev.location.name ? ` &middot; ${ev.location.name}` : '';
+
+    return `
+      <a class="event-card" href="${ev.url}" target="_blank" rel="noopener">
+        ${imgBlock}
+        <div class="event-card-body">
+          <div class="event-card-time">${time}</div>
+          <p class="event-card-title">${escapeHTML(ev.name)}</p>
+          <div class="event-card-meta">${catPill}${location}</div>
+        </div>
+      </a>`;
+  }
+
+  function renderLegend() {
+    const cats = Object.values(categories);
+    el.legend.innerHTML = cats.map(c => {
+      const isActive = activeCategories.has(c.id);
+      const tick = isActive ? `<span class="tick">&#10003;</span>` : '';
+      return `
+        <button type="button" class="legend-item${isActive ? ' active' : ''}" data-cat-id="${c.id}" aria-pressed="${isActive}">
+          <span class="cal-dot" style="background:${c.color}">${tick}</span>${c.name}
+        </button>`;
+    }).join('');
+
+    el.legend.querySelectorAll('.legend-item').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = Number(btn.dataset.catId);
+        if (activeCategories.has(id)) {
+          activeCategories.delete(id);
+        } else {
+          activeCategories.add(id);
+        }
+        renderLegend();
+        render();
+      });
+    });
+  }
+
+  function getFilteredEvents() {
+    if (activeCategories.size === 0) return allEvents;
+    return allEvents.filter(ev => activeCategories.has(ev.category_id));
+  }
+
+  function startOfToday() {
+    const d = new Date();
+    d.setHours(0,0,0,0);
+    return d;
+  }
+
+  function escapeHTML(str) {
+    const div = document.createElement('div');
+    div.textContent = str || '';
+    return div.innerHTML;
+  }
+
+  init();
+})();
+</script>
