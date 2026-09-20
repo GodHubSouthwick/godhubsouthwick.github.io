@@ -40,9 +40,20 @@ nav {
             text-decoration: none;
             font-size: min(max(12px, 2vh), 23px);
             font-weight: bold;
-            margin: 10px;
+            margin: 3px;
+            transition: all 0.15s;
+            padding: 7px;
+
+        }
+
+        & a:hover {
+            font-weight: 900;
             cursor: pointer;
-            transition: background-color 0.15s;
+            background: #00000017;
+            border-bottom-right-radius: 40%;
+            border-top-left-radius: 35%;
+            border-top-right-radius: 10px;
+            border-bottom-left-radius: 10px;
         }
     }
 
