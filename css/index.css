@@ -31,6 +31,7 @@
     font-size: 8rem;
     position: relative;
     overflow: hidden;
+    padding: 300px 0;
 }
 
 #heroText::before {
@@ -42,7 +43,7 @@
     z-index: -1;
 
     display: block;
-    background-image: url(https://fastly.picsum.photos/id/167/1000/300.jpg?hmac=MJreUYGdyS5C63HSVhnCG0p9roW1r0DQEs66NPjfB1c);
+    background-image: url("/images/grass_building.jpg");
     background-size:cover;
     width: 100%;
     height: 100%;
