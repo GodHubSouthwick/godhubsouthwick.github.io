@@ -1,12 +1,11 @@
 - name: home
   link: /
-#- name: events
-#  link: /calender
-  #onclick: document.getElementById('toggle').checked = false
+- name: events
+  link: /calender
 - name: our team
   link: /team
-#- name: find us
-#  onclick: linkToFindUs()
+- name: find us
+  onclick: linkToFindUs()
 - name: contact us
   link: /contactus
 - name: what we believe
