@@ -1,3 +1,27 @@
+body {
+    width: 100vw;
+    overflow-x: hidden;
+}
+
+.collection-of-images {
+    height: 90vh;
+    width: 100%;
+    position: relative;
+
+    & .image {
+        border-radius: 30px;
+        position: absolute;
+        top:20px;
+        left:0px;
+        box-shadow: #a4a4a4 0px 0px 3px;
+    }
+
+    & p {
+        text-align: right;
+        font-size: 48px;
+    }
+}
+
 /**********************************************************/
 /***                        HERO                        ***/
 /**********************************************************/
