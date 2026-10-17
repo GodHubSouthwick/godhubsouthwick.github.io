@@ -1,7 +1,7 @@
 - name: home
   link: /
 - name: events
-  link: /calender
+  link: /calendar
 - name: our team
   link: /team
 - name: find us
