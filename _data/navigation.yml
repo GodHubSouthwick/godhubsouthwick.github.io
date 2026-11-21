@@ -1,6 +1,6 @@
 - name: home
   link: /
-- name: Christmas
+- nane: christmas
   link: /christmas
 - name: events
   link: /calendar
