@@ -1,5 +1,7 @@
 - name: home
   link: /
+- nane: christmas
+  link: /christmas
 - name: events
   link: /calendar
 - name: our team
