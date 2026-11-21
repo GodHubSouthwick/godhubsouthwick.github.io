@@ -1,5 +1,7 @@
 - name: home
   link: /
+- name: Christmas
+  link: /christmas
 - name: events
   link: /calendar
 - name: our team
