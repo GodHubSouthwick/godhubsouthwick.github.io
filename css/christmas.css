@@ -1,4 +1,4 @@
-#invitation .grid {
+.vertical-image-text {
     display: grid;
     grid-template-columns: auto auto;
     gap: 20px;
@@ -40,5 +40,13 @@
     & .line {
         border-bottom: 1px solid #d7d3cf;
         width: 100%;
+    }
+}
+
+@media (max-width: 777px) {
+    .vertical-image-text {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 }
