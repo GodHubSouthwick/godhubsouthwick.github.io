@@ -1,3 +1,8 @@
+<link
+    rel="stylesheet"
+    href="css/layouts/festive.css"
+/>
+
 <!-- LAPTOP VIEW ICONS -->
 <div id="navA" class="laptop-only-nav">
     <a href="{{ url_for('index') }}" class="nav-img" style="border-radius: 50%; background-color: var(--accent)">
@@ -29,6 +34,6 @@
 <!-- THIS IS WHERE ITS AT -->
 <div id="navB" class="nav-links">
     {% for item in site.data.navigation %}
-        <a class="hover-underline" {% if item.onclick %} onclick="{{ item.onclick }}" {% endif %} {% if item.link %} href="{{ item.link }}" {% endif %} >{{ item.name | capitalize }}</a>
+        <a class="hover-underline{% if item.type %} {{item.type}}{% endif %}" {% if item.onclick %} onclick="{{ item.onclick }}" {% endif %} {% if item.link %} href="{{ item.link }}" {% endif %} >{{ item.name | capitalize }}</a>
     {% endfor %}
 </div>

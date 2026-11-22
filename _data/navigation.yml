@@ -2,6 +2,7 @@
   link: /
 - name: christmas
   link: /christmas
+  type: festive
 - name: events
   link: /calendar
 - name: our team

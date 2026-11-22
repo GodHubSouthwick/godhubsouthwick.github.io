@@ -1,0 +1,29 @@
+.festive {
+  position: relative;          /* anchor for the corner images */
+  --holly-size: 24px;
+  --holly-angle: 25deg;
+}
+
+.festive::before,
+.festive::after {
+  content: "";
+  position: absolute;
+  width: var(--holly-size);
+  height: var(--holly-size);
+  background: url("/images/christmas/holly.png") no-repeat center / contain;
+  pointer-events: none;        /* don't block clicks on the content */
+}
+
+/* Top right */
+.festive::before {
+  top: calc(var(--holly-size) / -3);
+  right: calc(var(--holly-size) / -3);
+  transform: rotate(var(--holly-angle));
+}
+
+/* Bottom left (turned 180° so it mirrors the top-right one) */
+.festive::after {
+  bottom: calc(var(--holly-size) / -3);
+  left: calc(var(--holly-size) / -3);
+  transform: rotate(calc(var(--holly-angle) + 150deg));
+}

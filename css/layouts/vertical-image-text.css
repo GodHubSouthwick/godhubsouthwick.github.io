@@ -1,0 +1,52 @@
+.vertical-image-text {
+    display: grid;
+    grid-template-columns: auto auto;
+    gap: 20px;
+
+    & img {
+        grid-row: 1 / 6;
+        height: 100%;
+        border-radius: 20px;
+    }
+
+    & div:not(.line) {
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+        text-align: left;
+        text-wrap: nowrap;
+
+        & small {
+            font-size: 24px;
+            letter-spacing: 2px;
+            color: #888;
+        }
+
+        & h2 {
+            font-size: clamp(26px, 3vw, 42px);
+            font-weight: 400;
+            margin: 15px 0;
+        }
+
+        & p {
+            font-size: 20px;
+            line-height: 1.8;
+            font-weight: 300;
+            max-width: 480px;
+            margin-top: 0;
+        }
+    }
+
+    & .line {
+        border-bottom: 1px solid #d7d3cf;
+        width: 100%;
+    }
+}
+
+@media (max-width: 777px) {
+    .vertical-image-text {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+}
