@@ -9,7 +9,7 @@
         border-radius: 20px;
     }
 
-    & div {
+    & div:not(.line) {
         display: flex;
         flex-direction: column;
         align-items: start;
