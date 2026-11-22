@@ -17,7 +17,7 @@
         text-wrap: nowrap;
 
         & small {
-            font-size: 12px;
+            font-size: 24px;
             letter-spacing: 2px;
             color: #888;
         }
@@ -29,10 +29,11 @@
         }
 
         & p {
-            font-size: 16px;
+            font-size: 20px;
             line-height: 1.8;
             font-weight: 300;
             max-width: 480px;
+            margin-top: 0;
         }
     }
 
