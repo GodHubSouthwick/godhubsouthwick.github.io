@@ -1,0 +1,47 @@
+.photo-gallery {
+    --col1: var(--primary-700); --col2: var(--secondary);
+    position: relative;
+    aspect-ratio: 20 / 19;   /* replaces height: 570px; scales with width */
+
+    & .photo {
+        position: absolute; height: auto; object-fit: cover;
+        border: 9px solid white;
+        box-shadow: 0 15px 32px rgba(0,0,0,.22); background: #ddd;
+    }
+
+    /* 3:2 landscape, top right */
+    & .photo-1 { width: 58%; right: 2%; top: 3%; transform: rotate(6deg); z-index: 1; }
+    /* ~1.64:1 landscape, middle left, just catching photo-1's corner */
+    & .photo-2 { width: 50%; left: 0; top: 40%; transform: rotate(-7deg); z-index: 2; }
+    /* square, bottom right, just catching photo-2's edge */
+    & .photo-3 { width: 40%; left: 45%; bottom: 3%; transform: rotate(4deg); z-index: 3; }
+
+    & .banner {
+        position: absolute; padding: .38em .65em; border-radius: 30px;
+        font-weight: 900; line-height: 1.05; box-shadow: 0 8px 20px rgba(0,0,0,.18);
+        z-index: 5; max-width: 85%;
+    }
+
+    & .banner-start { background: var(--col1); color: white; font-size: clamp(2rem, 5vw, 4.6rem); left: 3%; top: 20%; transform: rotate(-5deg); }
+    & .banner-family { background: var(--col2); color: var(--text); font-size: clamp(1.7rem, 4.3vw, 3.8rem); right: 1%; top: 47%; transform: rotate(5deg); text-align: center; }
+
+    & .burst { position: absolute; font-weight: 900; color: var(--col2); font-size: 5rem; z-index: 4; transform: rotate(-12deg); left: 3%; top: 7%; }
+    & .burst-two { color: var(--col1); left: auto; right: 1%; top: 69%; transform: rotate(15deg); font-size: 4rem; }
+
+    @media (max-width: 700px) {
+        aspect-ratio: 50 / 79;
+        max-width: 520px;
+        margin: 0 auto;
+
+        & .photo { border-width: 6px; box-shadow: 0 12px 24px rgba(0,0,0,.20); }
+        & .photo-1 { width: 82%; right: 0; top: 1%; transform: rotate(5deg); }
+        & .photo-2 { width: 80%; left: 0; top: 31.5%; transform: rotate(-6deg); }
+        & .photo-3 { width: 64%; left: auto; right: 2%; top: auto; bottom: 1%; transform: rotate(4deg); }
+
+        & .banner { border-radius: 22px; max-width: 95%; }
+        & .banner-start { font-size: clamp(2rem, 9vw, 3.2rem); left: 1%; top: 13%; transform: rotate(-4deg); }
+        & .banner-family { font-size: clamp(1.65rem, 7.5vw, 2.6rem); right: -1%; top: 56%; transform: rotate(4deg); }
+        & .burst { font-size: 3.2rem; left: 0; top: 0; }
+        & .burst-two { font-size: 3rem; left: 4%; right: auto; top: 72%; }
+    }
+}
